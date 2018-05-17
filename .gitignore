@@ -1,0 +1,7 @@
+.idea/
+*/.idea/
+writeup_template.md
+Roversim.app
+*/.ipynb_checkpoints/
+__pycache__
+.DS_Store
