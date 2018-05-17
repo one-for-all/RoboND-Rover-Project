@@ -6,3 +6,4 @@ Roversim.app
 __pycache__
 .DS_Store
 autonomous_images/
+autonomous_video/example.mov

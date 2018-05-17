@@ -86,6 +86,6 @@ In an infinite loop, the rover keeps doing the perception and decision step with
 * Another improvement is to keep track of the areas the rover has mapped and avoid spending time on these areas.
 * The rover sometimes would get stuck by the obstacles on the road.
 
-A example video of operation can be found at [autonomous_video/example.mov](./autonomous_video/example.mov)
+A example video of operation can be found at [autonomous_video/video.mp4](./autonomous_video/video.mp4)
 
 
