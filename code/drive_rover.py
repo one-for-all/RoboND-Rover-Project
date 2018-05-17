@@ -51,6 +51,8 @@ class RoverState():
         self.brake = 0 # Current brake value
         self.nav_angles = None # Angles of navigable terrain pixels
         self.nav_dists = None # Distances of navigable terrain pixels
+        self.rock_angles = None # Angles of rocks
+        self.rock_dists = None # Distances of rocks
         self.ground_truth = ground_truth_3d # Ground truth worldmap
         self.mode = 'forward' # Current mode (can be forward or stop)
         self.throttle_set = 0.2 # Throttle setting when accelerating
@@ -158,6 +160,7 @@ def connect(sid, environ):
         sample_data,
         skip_sid=True)
 
+
 def send_control(commands, image_string1, image_string2):
     # Define commands to be sent to the rover
     data={
@@ -173,7 +176,9 @@ def send_control(commands, image_string1, image_string2):
         data,
         skip_sid=True)
     eventlet.sleep(0)
-# Define a function to send the "pickup" command 
+# Define a function to send the "pickup" command
+
+
 def send_pickup():
     print("Picking up")
     pickup = {}
@@ -182,6 +187,8 @@ def send_pickup():
         pickup,
         skip_sid=True)
     eventlet.sleep(0)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Remote Driving')
     parser.add_argument(

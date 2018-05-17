@@ -36,7 +36,7 @@ You're reading it!
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 
-* In [Rover_Project_Test_Notebook.ipynb](./code/master/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in function **color_thresh**.    
+* In [Rover_Project_Test_Notebook.ipynb](./code/master/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in `color_thresh()`.    
 * The range of rgb values for rock is hardcoded, (by inspection of color values of rocks in sample images). The rocks are where rgb values fall in this range.    
 * The obstacles are where neither covered by ground nor rocks.
 
@@ -58,16 +58,34 @@ A example video output can be found at [output/test_mapping.mp4](./output/test_m
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
+**Perception:**    
+* The image processing in `perception_step()` is the same as explained above for `process_image()`, except that worldmap is updated only when `roll` and `pitch` values of the rover are < 1 to reduce incorrect updates due to distorted perspective transform.
+* The ground coordinates is also transformed into polar coordinates in rover perspective for later decision making.
 
+**Decision:**    
+* The robot moves when there is enough space as suggested by the number of ground pixels perceived, and stops and turns when not enough space ahead.
+* When a rock is located, the rover will move in the direction of the rock at a lower throttle, and stop when near it, in order to pick it up.
+* Otherwise, the rover moves in the average angle of all ground pixels, with some gaussian noise added to help it get unstuck in some infinite loops, and to add some randomness to its path.
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
 
-**Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
+**For results reproduction:**
+* Screen resolution: 1024 x 640  
+* Graphic Quality: Good
+* Frames per second: ~20
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+**Results:**
+* The rover should be able to map 40% of the environment with 60% fidelity most of the time, sometimes much better with 60% of environment and 80% fidelity.
+* When the rover has identified a rock, it would move in the rock's direction, and stop near it. However, sometimes the rover fails to pick the rock up.
 
+**Pipeline:**    
+In an infinite loop, the rover keeps doing the perception and decision step with techniques described above.
 
+**Potential Improvements:**
+* I tried to implement wall following in `decision_step()`. However, the naive way of using left most angle failed to give correct behavior, and I couldn't think of a feasible way of doing this. A potential improvement is to find some way to implement wall following, so that the rover might be able to map the environment more comprehensively.
+* Another improvement is to keep track of the areas the rover has mapped and avoid spending time on these areas.
+* The rover sometimes would get stuck by the obstacles on the road.
 
-![alt text][image3]
+A example video of operation can be found at [autonomous_video/example.mov](./autonomous_video/example.mov)
 
 

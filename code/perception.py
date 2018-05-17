@@ -7,7 +7,7 @@ import cv2
 def color_thresh(img, rgb_thresh=(160, 160, 160)):
     # rock thresholds
     rock_threshold = (130, 110, 0)
-    rock_upper = (220, 180, 60)
+    rock_upper_bound = (220, 180, 60)
 
     # Create an array of zeros same xy size as img, but single channel
     color_select = np.zeros_like(img[:, :, 0])
@@ -16,26 +16,27 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
     # Require that each pixel be above all three threshold values in RGB
     # above_thresh will now contain a boolean array with "True"
     # where threshold was met
-    above_thresh = (img[:, :, 0] > rgb_thresh[0]) \
-                   & (img[:, :, 1] > rgb_thresh[1]) \
-                   & (img[:, :, 2] > rgb_thresh[2])
+    ground_indices = (img[:, :, 0] > rgb_thresh[0]) \
+                     & (img[:, :, 1] > rgb_thresh[1]) \
+                     & (img[:, :, 2] > rgb_thresh[2])
 
-    obstacles_thresh = ~above_thresh
+    obstacles_indices = ~ground_indices
 
-    rock_above_threshold = (img[:, :, 0] > rock_threshold[0]) & (
-    img[:, :, 0] < rock_upper[0]) \
-                           & (img[:, :, 1] > rock_threshold[1]) & (
-                           img[:, :, 1] < rock_upper[1]) \
-                           & (img[:, :, 2] > rock_threshold[2]) & (
-                           img[:, :, 2] < rock_upper[2])
+    rock_indices = (img[:, :, 0] > rock_threshold[0]) & (
+    img[:, :, 0] < rock_upper_bound[0]) \
+                   & (img[:, :, 1] > rock_threshold[1]) & (
+                   img[:, :, 1] < rock_upper_bound[1]) \
+                   & (img[:, :, 2] > rock_threshold[2]) & (
+                   img[:, :, 2] < rock_upper_bound[2])
     # Index the array of zeros with the boolean array and set to 1
-    color_select[above_thresh] = 1
-    color_select[rock_above_threshold] = 1
-    obstacles[obstacles_thresh] = 1
-    obstacles[rock_above_threshold] = 0
-    rocks[rock_above_threshold] = 1
+    color_select[ground_indices] = 1
+    color_select[rock_indices] = 1
+    obstacles[obstacles_indices] = 1
+    obstacles[rock_indices] = 0
+    rocks[rock_indices] = 1
     # Return the binary image
     return color_select, obstacles, rocks
+
 
 # Define a function to convert from image coords to rover coords
 def rover_coords(binary_img):
@@ -88,6 +89,7 @@ def pix_to_world(xpix, ypix, xpos, ypos, yaw, world_size, scale):
     y_pix_world = np.clip(np.int_(ypix_tran), 0, world_size - 1)
     # Return the result
     return x_pix_world, y_pix_world
+
 
 # Define a function to perform a perspective transform
 def perspect_transform(img, src, dst):
@@ -165,5 +167,12 @@ def perception_step(Rover):
     dist, angles = to_polar_coords(xpix, ypix)
     Rover.nav_dists = dist
     Rover.nav_angles = angles
+    if rocks.any() > 0:
+        rock_dists, rock_angles = to_polar_coords(xpix_rocks, ypix_rocks)
+        Rover.rock_angles = rock_angles
+        Rover.rock_dists = rock_dists
+    else:
+        Rover.rock_angles = None
+        Rover.rock_dists = None
     
     return Rover
