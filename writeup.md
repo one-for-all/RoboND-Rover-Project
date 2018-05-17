@@ -36,14 +36,14 @@ You're reading it!
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 
-In [Rover_Project_Test_Notebook.ipynb] (./code/master/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in function **color_thresh**.    
-The range of rgb values for rock is hardcoded, (by inspection of color values of rocks in sample images). The rocks are where rgb values fall in this range.    
-The obstacles are where neither covered by ground nor rocks.
+* In [Rover_Project_Test_Notebook.ipynb](./code/master/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in function **color_thresh**.    
+* The range of rgb values for rock is hardcoded, (by inspection of color values of rocks in sample images). The rocks are where rgb values fall in this range.    
+* The obstacles are where neither covered by ground nor rocks.
 
-Original image:
+Original image:    
 ![original rock image][rock_image]
 
-Identification:
+Identification:    
 ![object identification by color][color_classificiation]
 
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
@@ -54,7 +54,7 @@ The camera image is processed in the following way:
 4. For worldmap, blue channel value is increased for each identification of ground, red for obstacle, and green for rock.
 5. A mosaic image is created, consisting of original camera image, top-down view, worldmap overlayed with ground truth, and text indicating when rocks have been identified.
 
-A example video output can be found at [./output/test_mapping.mp4] (./output/test_mapping.mp4).
+A example video output can be found at [output/test_mapping.mp4](./output/test_mapping.mp4).
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
