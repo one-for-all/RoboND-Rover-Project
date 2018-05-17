@@ -36,7 +36,7 @@ You're reading it!
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
 
-* In [Rover_Project_Test_Notebook.ipynb](./code/master/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in `color_thresh()`.    
+* In [Rover_Project_Test_Notebook.ipynb](./code/Rover_Project_Test_Notebook.ipynb), the implementation for rock and obstacle color selection in written in `color_thresh()`.    
 * The range of rgb values for rock is hardcoded, (by inspection of color values of rocks in sample images). The rocks are where rgb values fall in this range.    
 * The obstacles are where neither covered by ground nor rocks.
 
@@ -82,7 +82,7 @@ A example video output can be found at [output/test_mapping.mp4](./output/test_m
 In an infinite loop, the rover keeps doing the perception and decision step with techniques described above.
 
 **Potential Improvements:**
-* I tried to implement wall following in `decision_step()`. However, the naive way of using left most angle failed to give correct behavior, and I couldn't think of a feasible way of doing this. A potential improvement is to find some way to implement wall following, so that the rover might be able to map the environment more comprehensively.
+* Tried to implement wall following in `decision_step()`. However, the naive way of using left most angle failed to give correct behavior, and I couldn't think of a feasible way of doing this. A potential improvement is to find some way to implement wall following, so that the rover might be able to map the environment more comprehensively.
 * Another improvement is to keep track of the areas the rover has mapped and avoid spending time on these areas.
 * The rover sometimes would get stuck by the obstacles on the road.
 
